@@ -25,15 +25,46 @@ public abstract class Grid extends Model {
 
     protected void populate() {
         // 1. use makeCell to fill in cells
-        // 2. use getNeighbors to set the neighbors field of each cell
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                cells[i][j] = makeCell(true);
+            }
+        }
+
+        // 2. Use getNeighbors to set the neighbors field of each cell
+        // 2. Use getNeighbors to set the neighbors field of each cell
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                // Get the current cell
+                Cell currentCell = cells[i][j];
+
+                // Get neighbors of the current cell within a specified radius
+                Set<Cell> currentNeighbors = getNeighbors(currentCell, 1); // Example: radius = 1
+
+                // Set the neighbors field of the current cell
+                currentCell.neighbors = currentNeighbors;
+            }
+        }
     }
 
     // called when Populate button is clicked
     public void repopulate(boolean randomly) {
         if (randomly) {
             // randomly set the status of each cell
+            Random random = new Random();
+            for (int i = 0; i < dim; i++) {
+                for (int j = 0; j < dim; i++) {
+                    boolean alive = random.nextBoolean();
+                    cells[i][j].reset(true);
+                }
+            }
         } else {
             // set the status of each cell to 0 (dead)
+            for (int i = 0; i < dim; i++) {
+                for (int j = 0; j < dim; j++) {
+                    cells[i][j].reset(false);
+                }
+            }
         }
         // notify subscribers
     }
@@ -46,6 +77,29 @@ public abstract class Grid extends Model {
         Tricky part: cells in row/col 0 or dim - 1.
         The asker is not a neighbor of itself.
         */
+        Set<Cell> neighbors = new HashSet<>();
+        int row = asker.row;
+        int col = asker.col;
+
+        // Iterate over rows within the specified radius
+        for (int i = row - radius; i <= row + radius; i++) {
+            // Adjust row index for wrapping around
+            int adjustedRow = (i + dim) % dim;
+
+            // Iterate over columns within the specified radius
+            for (int j = col - radius; j <= col + radius; j++) {
+                // Adjust column index for wrapping around
+                int adjustedCol = (j + dim) % dim;
+
+                // Skip the current cell (asker)
+                if (adjustedRow == row && adjustedCol == col) {
+                    continue;
+                }
+                // Add the cell to neighbors set
+                neighbors.add(cells[adjustedRow][adjustedCol]);
+            }
+        }
+        return neighbors;
     }
 
     // overide these
