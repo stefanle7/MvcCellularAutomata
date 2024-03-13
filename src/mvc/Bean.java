@@ -14,7 +14,7 @@ abstract public class Bean implements Serializable {
      * inherits them). Therefore we declare them to
      * be transient.
      */
-    transient protected PropertyChangeSupport mPcs =
+    transient protected PropertyChangeSupport mPcs =        // this is the list of subscribers?
             new PropertyChangeSupport(this);
 
     transient protected VetoableChangeSupport mVcs =
@@ -38,7 +38,7 @@ abstract public class Bean implements Serializable {
         mPcs.firePropertyChange(propertyName, oldValue, newValue);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    public void addPropertyChangeListener(PropertyChangeListener listener) { // method called analogous to notifySubscribers
         mPcs.addPropertyChangeListener(listener);
     }
 

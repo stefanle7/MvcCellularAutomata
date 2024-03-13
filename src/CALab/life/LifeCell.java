@@ -7,17 +7,30 @@ import java.util.Random;
 public class LifeCell extends Cell {
 
     private boolean alive;
+
     public LifeCell(boolean alive) {
         this.alive = alive;
     }
 
-    public boolean isAlive() {
-        return alive;
+    private int countLivingNeighbors() {
+        int livingNeighbors = 0;
+        for (Cell neighbor : neighbors) {
+            if (neighbor instanceof LifeCell && ((LifeCell) neighbor).isAlive()) {
+                livingNeighbors++;
+            }
+        }
+        return livingNeighbors;
     }
 
     public void setAlive(boolean alive) {
         this.alive = alive;
     }
+
+    @Override
+    public boolean isAlive() {
+        return alive;
+    }
+
     @Override
     public void observe() {
         // In this method, we observe the states of neighboring cells.
@@ -58,15 +71,5 @@ public class LifeCell extends Cell {
         } else {
             alive = false;
         }
-    }
-
-    private int countLivingNeighbors() {
-        int livingNeighbors = 0;
-        for (Cell neighbor : neighbors) {
-            if (neighbor instanceof LifeCell && ((LifeCell) neighbor).isAlive()) {
-                livingNeighbors++;
-            }
-        }
-        return livingNeighbors;
     }
 }
