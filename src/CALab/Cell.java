@@ -1,10 +1,11 @@
 package CALab;
 
+import java.awt.*;
 import java.util.*;
 import java.io.*;
 import mvc.*;
 
-public abstract class Cell extends Publisher implements Serializable {
+public abstract class Cell extends Bean implements Serializable {
 
     protected int row = 0, col = 0;
     protected Set<Cell> neighbors = new HashSet<Cell>();
@@ -21,6 +22,24 @@ public abstract class Cell extends Publisher implements Serializable {
 			Starting at a random position in the array search for a neighbor without a partner
 			Make the first such neighbor (if any) the partner and set its partner field to this
 			*/
+            if (partner == null && neighbors != null) {
+                // Convert neighbors set to a local array
+                Cell[] neighborsArray = neighbors.toArray(new Cell[0]);
+
+                // Shuffle the array to start searching from a random position
+                Collections.shuffle(Arrays.asList(neighborsArray));
+
+                // Search for a neighbor without a partner
+                for (Cell neighbor : neighborsArray) {
+                    if (neighbor.partner == null) {
+                        // Set partner to the current neighbor
+                        partner = neighbor;
+                        // Set the partner's partner field to this cell
+                        neighbor.partner = this;
+                        break; // Exit loop after finding the first partner
+                    }
+                }
+            }
         }
 
     }
@@ -44,5 +63,14 @@ public abstract class Cell extends Publisher implements Serializable {
     public abstract void nextState();
     // set status to a random or initial value
     public abstract void reset(boolean randomly);
+    // determines if the cell is dead or alive
+    public abstract boolean isAlive();
 
+    public Color getColor() {
+        if (isAlive()) {
+            return Color.GREEN;
+        } else {
+            return Color.RED;
+        }
+    }
 }

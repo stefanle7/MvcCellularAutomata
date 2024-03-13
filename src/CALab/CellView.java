@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class CellView extends JButton implements ActionListener, Subscriber {
+public class CellView extends JButton implements ActionListener, Subscriber { // needs to implement PropertyChangeListener rather than Subscriber
     private Cell myCell;
 
     public CellView(Cell c) {

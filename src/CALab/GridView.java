@@ -15,6 +15,7 @@ public class GridView  extends View {
         cellViews[row][col] = cell
         set cell.row and cell.col here
         */
+        super(model);
     }
 
     public void update(String msg, Object oldState, Object newState) {
