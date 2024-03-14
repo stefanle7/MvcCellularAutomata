@@ -5,7 +5,8 @@ import java.util.*;
 import java.io.*;
 import mvc.*;
 
-public abstract class Cell extends Bean implements Serializable {
+// replaced extends Bean with extends Publisher
+public abstract class Cell extends Publisher implements Serializable {
 
     protected int row = 0, col = 0;
     protected Set<Cell> neighbors = new HashSet<Cell>();
