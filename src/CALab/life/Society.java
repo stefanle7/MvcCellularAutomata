@@ -3,6 +3,11 @@ package CALab.life;
 import CALab.*;
 
 public class Society extends Grid {
+
+    private static final int percentAlive = 50;
+    private static int rebirth;
+    private static int death;
+
     public Society(int dim) {
         super(dim);
     }
