@@ -65,12 +65,4 @@ public abstract class Cell extends Bean implements Serializable {
     public abstract void reset(boolean randomly);
     // determines if the cell is dead or alive
     public abstract boolean isAlive();
-
-    public Color getColor() {
-        if (isAlive()) {
-            return Color.GREEN;
-        } else {
-            return Color.RED;
-        }
-    }
 }
