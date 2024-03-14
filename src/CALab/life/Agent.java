@@ -2,6 +2,7 @@ package CALab.life;
 
 import CALab.Cell;
 
+import java.awt.*;
 import java.util.Random;
 
 public class Agent extends Cell {
@@ -14,10 +15,6 @@ public class Agent extends Cell {
 
     int livingNeighborCount;
 
-    @Override
-    public boolean isAlive() {
-        return alive;
-    }
 
     @Override
     public void observe() {
@@ -28,7 +25,7 @@ public class Agent extends Cell {
         for (Cell neighbor : neighbors) {
             if (neighbor instanceof Agent) {
                 // Check if the neighbor is alive
-                if (((Agent) neighbor).isAlive()) {
+                if (((Agent) neighbor).alive) {
                     // Increment the counter if the neighbor is alive
                     livingNeighborCount++;
                 }
@@ -64,6 +61,24 @@ public class Agent extends Cell {
             alive = new Random().nextBoolean();
         } else {
             alive = false;
+        }
+    }
+
+    @Override
+    public int getStatus() {
+        if (alive) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public Color getColor() {
+        if (alive) {
+            return Color.GREEN;
+        } else {
+            return Color.RED;
         }
     }
 }
