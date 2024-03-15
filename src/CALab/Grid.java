@@ -32,7 +32,6 @@ public abstract class Grid extends Model {
         }
 
         // 2. Use getNeighbors to set the neighbors field of each cell
-        // 2. Use getNeighbors to set the neighbors field of each cell
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
                 // Get the current cell
