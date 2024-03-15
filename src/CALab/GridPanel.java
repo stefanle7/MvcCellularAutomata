@@ -1,71 +1,69 @@
 package CALab;
 
+import mvc.*;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-
-import CALab.GridFactory;
-import mvc.*;
+import java.beans.PropertyChangeEvent;
 
 public class GridPanel extends AppPanel {
 
-    // Constructor
-    public GridPanel(AppFactory af) {
-        super(af);
-        addButtons();
-    }
+    private JTextField dimField;
 
-    // Add buttons to the control panel
-    private void addButtons() {
+    public GridPanel(AppFactory factory) {
+        super(factory);
+        Grid grid = (Grid) view.model;
+        grid.addPropertyChangeListener(this);
+        controlPanel.setLayout(new FlowLayout()); // Use FlowLayout instead of GridLayout
+
+        // Create buttons
         JButton run1Button = new JButton("Run1");
         JButton run50Button = new JButton("Run50");
         JButton populateButton = new JButton("Populate");
         JButton clearButton = new JButton("Clear");
 
+        // Set preferred size for the buttons
+        Dimension buttonSize = new Dimension(100, 30);
+        run1Button.setPreferredSize(buttonSize);
+        run50Button.setPreferredSize(buttonSize);
+        populateButton.setPreferredSize(buttonSize);
+        clearButton.setPreferredSize(buttonSize);
+
+        // Add action listeners
         run1Button.addActionListener(this);
         run50Button.addActionListener(this);
         populateButton.addActionListener(this);
         clearButton.addActionListener(this);
 
+        // Add buttons to the control panel
         controlPanel.add(run1Button);
         controlPanel.add(run50Button);
         controlPanel.add(populateButton);
         controlPanel.add(clearButton);
-    }
 
-    // Handle button clicks
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e); // Call the actionPerformed method of the superclass
+        // Create grid panel (right side)
+        JPanel gridPanel = new JPanel(new GridLayout(grid.getDim(), grid.getDim()));
 
-        // Handle button-specific actions
-        String command = e.getActionCommand();
-        switch (command) {
-            case "Run1":
-                // Implement code to run one iteration
-                break;
-            case "Run50":
-                // Implement code to run fifty iterations
-                break;
-            case "Populate":
-                int choice = JOptionPane.showConfirmDialog(this, "Do you want to populate randomly?", "Populate Grid", JOptionPane.YES_NO_OPTION);
-                boolean randomly = (choice == JOptionPane.YES_OPTION);
-
-                // Populate the grid
-                ((Grid) view.model).populate();
-                break;
-            case "Clear":
-                // Implement code to clear the grid
-                break;
-            default:
-                // Handle unrecognized command
-                break;
+        // Populate grid panel with cell views
+        for (int i = 0; i < grid.getDim(); i++) {
+            for (int j = 0; j < grid.getDim(); j++) {
+                Cell cell = grid.getCell(i, j);
+                CellView cellView = new CellView(cell);
+                gridPanel.add(cellView);
+            }
         }
+
+        // Add grid panel to the main panel
+        add(gridPanel);
     }
 
-    // main method for testing
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        super.propertyChange(evt);
+    }
+
     public static void main(String[] args) {
-        AppFactory factory = new GridFactory(); // Assuming you have a GridFactory
+        AppFactory factory = new GridFactory();
         AppPanel panel = new GridPanel(factory);
         panel.display();
     }

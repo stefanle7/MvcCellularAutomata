@@ -49,14 +49,13 @@ public class GridFactory implements AppFactory {
     public Command makeEditCommand(Model model, String name, Object object) {
         if (name.equals("Populate")) {
             return new PopulateCommand(model);
+        } else if (name.equals("Run1")) {
+            return new RunCommand(model, 1);
+        } else if (name.equals("Run50")) {
+            return new RunCommand(model, 50);
+        } else if (name.equals("Clear")) {
+            return new ClearCommand(model);
         }
-//        else if (name.equals("Run1")) {
-//            return new RunCommand(model, 1);
-//        } else if (name.equals("Run50")) {
-//            return new RunCommand(model, 50);
-//        } else if (name.equals("Clear")) {
-//            return new ClearCommand(model);
-//        }
         return null;
     }
 }

@@ -27,7 +27,7 @@ public abstract class Grid extends Model {
         // 1. use makeCell to fill in cells
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                cells[i][j] = makeCell(true);
+                cells[i][j] = makeCell(false);
             }
         }
 
@@ -44,7 +44,6 @@ public abstract class Grid extends Model {
                 currentCell.neighbors = currentNeighbors;
             }
         }
-
         changed();
     }
 
@@ -54,7 +53,7 @@ public abstract class Grid extends Model {
             // randomly set the status of each cell
             Random random = new Random();
             for (int i = 0; i < dim; i++) {
-                for (int j = 0; j < dim; i++) {
+                for (int j = 0; j < dim; j++) {
                     boolean alive = random.nextBoolean();
                     cells[i][j].reset(true);
                 }
@@ -67,7 +66,7 @@ public abstract class Grid extends Model {
                 }
             }
         }
-        // notify subscribers
+        changed();
     }
 
 
@@ -103,7 +102,7 @@ public abstract class Grid extends Model {
         return neighbors;
     }
 
-    // overide these
+    // override these
     public int getStatus() { return 0; }
     public Color getColor() { return Color.GREEN; }
 
