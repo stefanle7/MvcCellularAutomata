@@ -44,6 +44,8 @@ public abstract class Grid extends Model {
                 currentCell.neighbors = currentNeighbors;
             }
         }
+
+        changed();
     }
 
     // called when Populate button is clicked

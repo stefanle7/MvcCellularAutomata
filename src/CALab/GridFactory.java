@@ -1,8 +1,7 @@
 package CALab;
 
 import CALab.life.Society;
-import StopLight.Stoplight;
-import StopLight.StoplightView;
+import StopLight.ChangeCommand;
 import mvc.*;
 
 public class GridFactory implements AppFactory {
@@ -48,17 +47,16 @@ public class GridFactory implements AppFactory {
     // create and return appropriate edit commands
     @Override
     public Command makeEditCommand(Model model, String name, Object object) {
-        switch (name) {
-            case "Run1":
-                return new Run1(); // Replace with actual command class for Command1
-            case "Run50":
-                return new Run50(); // Replace with actual command class for Command2
-            case "Populate":
-                return new Command3(); // Replace with actual command class for Command3
-            case "Clear":
-                return new Clear(); // Replace with actual command class for Command3
-            default:
-                return null;
+        if (name.equals("Populate")) {
+            return new PopulateCommand(model);
         }
+//        else if (name.equals("Run1")) {
+//            return new RunCommand(model, 1);
+//        } else if (name.equals("Run50")) {
+//            return new RunCommand(model, 50);
+//        } else if (name.equals("Clear")) {
+//            return new ClearCommand(model);
+//        }
+        return null;
     }
 }

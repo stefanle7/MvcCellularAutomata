@@ -45,4 +45,12 @@ public class GridView  extends View {
         }
     }
 
+    public void update() { // I'm not sure if params are needed
+        // Call update method of each CellView
+        for (int i = 0; i < cellViews.length; i++) {
+            for (int j = 0; j < cellViews[i].length; j++) {
+                cellViews[i][j].update();
+            }
+        }
+    }
 }
