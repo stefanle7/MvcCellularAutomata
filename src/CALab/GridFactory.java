@@ -41,7 +41,7 @@ public class GridFactory implements AppFactory {
     // return array of edit commands
     @Override
     public String[] getEditCommands() {
-        return new String[0];
+        return new String[] {"Run1", "Run50", "Populate", "Clear"};
     }
 
     // create and return appropriate edit commands

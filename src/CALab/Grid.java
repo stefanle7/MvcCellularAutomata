@@ -49,6 +49,7 @@ public abstract class Grid extends Model {
 
     // called when Populate button is clicked
     public void repopulate(boolean randomly) {
+        System.out.println("Called " + randomly);
         if (randomly) {
             // randomly set the status of each cell
             Random random = new Random();

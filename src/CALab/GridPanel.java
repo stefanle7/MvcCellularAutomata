@@ -8,8 +8,6 @@ import java.beans.PropertyChangeEvent;
 
 public class GridPanel extends AppPanel {
 
-    private JTextField dimField;
-
     public GridPanel(AppFactory factory) {
         super(factory);
         Grid grid = (Grid) view.model;
