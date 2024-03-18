@@ -1,4 +1,4 @@
-package CALab.life;
+package life;
 
 import CALab.*;
 
