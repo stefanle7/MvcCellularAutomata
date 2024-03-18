@@ -7,27 +7,26 @@ import java.util.Random;
 
 public class Agent extends Cell {
 
-    private boolean alive;
+    private int status = 0;
+    private int ambience = 8;
 
-    public Agent(boolean alive) {
-        this.alive = alive;
+
+    public Agent(int status) {
+        this.status = status;
     }
-
-    int livingNeighborCount;
-
 
     @Override
     public void observe() {
         // Initialize a counter to keep track of the number of living neighbors
-        livingNeighborCount = 0;
+        ambience = 0;
 
         // Iterate over the neighbors of the cell
         for (Cell neighbor : neighbors) {
             if (neighbor instanceof Agent) {
                 // Check if the neighbor is alive
-                if (((Agent) neighbor).alive) {
+                if (((Agent) neighbor).status == 1) {
                     // Increment the counter if the neighbor is alive
-                    livingNeighborCount++;
+                    ambience++;
                 }
             }
         }
@@ -41,44 +40,32 @@ public class Agent extends Cell {
     @Override
     public void update() {
         // Update the status based on the number of living neighbors and the current status
-        if (alive && (livingNeighborCount < 2 || livingNeighborCount > 3)) {
+        if (this.status == 1 && (this.ambience < 2 || this.ambience > 3)) {
             // If the cell is alive and has fewer than 2 or more than 3 living neighbors, it dies
-            alive = false;
-        } else if (!alive && livingNeighborCount == 3) {
+            status = 0;
+        } else if (this.status == 0 && ambience == 3) {
             // If the cell is dead and has exactly 3 living neighbors, it becomes alive
-            alive = true;
+            status = 1;
         }
     }
 
     @Override
     public void nextState() {
-        alive = !alive;
+        status = (status + 1) % 2;
     }
 
     @Override
     public void reset(boolean randomly) {
         if (randomly) {
-            alive = new Random().nextBoolean();
+            status = new Random().nextInt(2); // Generates either 0 or 1 randomly
         } else {
-            alive = false;
+            status = 0; // Sets the status to dead (0)
         }
     }
 
     @Override
     public int getStatus() {
-        if (alive) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return status; // Simply return the status value
     }
 
-    @Override
-    public Color getColor() {
-        if (alive) {
-            return Color.GREEN;
-        } else {
-            return Color.RED;
-        }
-    }
 }

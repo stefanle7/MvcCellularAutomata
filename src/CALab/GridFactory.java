@@ -1,5 +1,7 @@
 package CALab;
 
+import CALab.life.Society;
+import StopLight.ChangeCommand;
 import mvc.*;
 
 public class GridFactory implements AppFactory {
@@ -7,42 +9,53 @@ public class GridFactory implements AppFactory {
     // create and return instance of grid model
     @Override
     public Model makeModel() {
-        return null;
+        return new Society();
     }
 
     // create and return instance of grid model view
     @Override
     public View makeView(Model m) {
-        return null;
+        return new GridView((Grid) m);
     }
 
     // title of CALab
     @Override
     public String getTitle() {
-        return null;
+        return "Cell Automata: Life";
     }
 
     // help instructions
     @Override
     public String[] getHelp() {
-        return new String[0];
+        return new String[] {"Click Run to update and view the status of cells as time passes",
+                "Click Populate to create cells within the grid",
+                "Click Clear to empty the grid"};
     }
 
     // provide information about the application
     @Override
     public String about() {
-        return null;
+        return "Cellular Automata: Life Group 4";
     }
 
     // return array of edit commands
     @Override
     public String[] getEditCommands() {
-        return new String[0];
+        return new String[] {"Run1", "Run50", "Populate", "Clear"};
     }
 
     // create and return appropriate edit commands
     @Override
     public Command makeEditCommand(Model model, String name, Object object) {
+        if (name.equals("Populate")) {
+            return new PopulateCommand(model);
+        } else if (name.equals("Run1")) {
+            return new RunCommand(model, 1);
+        } else if (name.equals("Run50")) {
+            return new RunCommand(model, 50);
+        } else if (name.equals("Clear")) {
+            return new ClearCommand(model);
+        }
         return null;
     }
 }

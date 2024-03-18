@@ -1,6 +1,5 @@
 package StopLight;
 
-import java.awt.*;
 import javax.swing.*;
 
 import mvc.*;
