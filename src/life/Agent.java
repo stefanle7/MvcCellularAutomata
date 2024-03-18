@@ -1,8 +1,7 @@
-package CALab.life;
+package life;
 
 import CALab.Cell;
 
-import java.awt.*;
 import java.util.Random;
 
 public class Agent extends Cell {

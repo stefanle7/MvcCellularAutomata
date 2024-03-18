@@ -1,7 +1,6 @@
 package CALab;
 
-import CALab.life.Society;
-import StopLight.ChangeCommand;
+import life.Society;
 import mvc.*;
 
 public class GridFactory implements AppFactory {
