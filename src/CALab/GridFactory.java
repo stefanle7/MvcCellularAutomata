@@ -1,21 +1,19 @@
 package CALab;
 
-import life.Society;
-import mvc.*;
+import mvc.AppFactory;
+import mvc.Command;
+import mvc.Model;
+import mvc.View;
 
-public class GridFactory implements AppFactory {
+public abstract class GridFactory implements AppFactory {
 
     // create and return instance of grid model
     @Override
-    public Model makeModel() {
-        return new Society();
-    }
+    public abstract Model makeModel();
 
     // create and return instance of grid model view
     @Override
-    public View makeView(Model m) {
-        return new GridView((Grid) m);
-    }
+    public abstract View makeView(Model m);
 
     // title of CALab
     @Override
