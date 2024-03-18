@@ -1,12 +1,18 @@
 package mvc;
 
-abstract public class Model extends Bean{
+import java.io.Serializable;
+
+public class Model extends Publisher implements Serializable {
     private boolean unsavedChanges = false;
     public String fileName = null;
 
+    public Model() {
+    }
+
     public void changed(){
-        firePropertyChange(null, null, null);
-        unsavedChanges = true;
+        // firePropertyChange(null, null, null);
+        this.unsavedChanges = true;
+        this.notifySubscribers();
     }
 
     public String getFileName(){
