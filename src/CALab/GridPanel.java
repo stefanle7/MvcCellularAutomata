@@ -4,14 +4,12 @@ import mvc.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
 
 public class GridPanel extends AppPanel {
 
     public GridPanel(AppFactory factory) {
         super(factory);
         Grid grid = (Grid) view.model;
-        grid.addPropertyChangeListener(this);
         controlPanel.setLayout(new FlowLayout()); // Use FlowLayout instead of GridLayout
 
         // Create buttons
@@ -53,16 +51,5 @@ public class GridPanel extends AppPanel {
 
         // Add grid panel to the main panel
         add(gridPanel);
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        super.propertyChange(evt);
-    }
-
-    public static void main(String[] args) {
-        AppFactory factory = new GridFactory();
-        AppPanel panel = new GridPanel(factory);
-        panel.display();
     }
 }
