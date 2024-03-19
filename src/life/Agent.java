@@ -39,19 +39,19 @@ public class Agent extends Cell {
 
     @Override
     public void update() {
-        // Update the status based on the number of living neighbors and the current status
-        if (this.status == 1 && (this.ambience < 2 || this.ambience > 3)) {
-            // If the cell is alive and has fewer than 2 or more than 3 living neighbors, it dies
-            status = 0;
-        } else if (this.status == 0 && ambience == 3) {
-            // If the cell is dead and has exactly 3 living neighbors, it becomes alive
-            status = 1;
-        }
+        nextState();
+        notifySubscribers();
     }
 
     @Override
     public void nextState() {
-        status = (status + 1) % 2;
+//        status = (status + 1) % 2;
+        if (status == 0 && ambience == 3) {
+            status = 1;
+        }
+        else if (status == 1 && (ambience <= 1 || ambience >= 4)) {
+            status = 0;
+        }
     }
 
     @Override
