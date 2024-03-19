@@ -34,39 +34,29 @@ public abstract class Grid extends Model {
         // 2. Use getNeighbors to set the neighbors field of each cell
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-//                // Get the current cell
-//                Cell currentCell = cells[i][j];
-//
-//                // Get neighbors of the current cell within a specified radius
-//                Set<Cell> currentNeighbors = getNeighbors(currentCell, 1); // Example: radius = 1
-//
-//                // Set the neighbors field of the current cell
-//                currentCell.neighbors = currentNeighbors;
-
                 cells[i][j].neighbors = getNeighbors(cells[i][j],1);
             }
         }
-//        changed();
-        repopulate(true);
     }
 
     // called when Populate button is clicked
-    public void repopulate(boolean randomly) {
-        if (randomly) {
+    public void repopulate() {
             // randomly set the status of each cell
             Random random = new Random();
             for (int i = 0; i < dim; i++) {
                 for (int j = 0; j < dim; j++) {
-                    boolean alive = random.nextBoolean();
                     cells[i][j].reset(true);
                 }
             }
-        } else {
-            // set the status of each cell to 0 (dead)
-            for (int i = 0; i < dim; i++) {
-                for (int j = 0; j < dim; j++) {
-                    cells[i][j].reset(false);
-                }
+        updateLoop(1);
+        changed();
+    }
+
+    public void clear() {
+        // set the status of each cell to 0 (dead)
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                cells[i][j].reset(false);
             }
         }
         updateLoop(1);

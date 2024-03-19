@@ -8,8 +8,7 @@ public class PopulateCommand extends Command {
 
     public void execute() {
         Grid grid = (Grid) model;
-        grid.repopulate(true);
-        ((Grid) model).update();
+        grid.repopulate();
     }
 
 }
