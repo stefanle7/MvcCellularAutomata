@@ -6,7 +6,7 @@ import mvc.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 
-public class GridView  extends View {
+public class GridView extends View {
 
     private CellView cellViews[][];
 
@@ -44,16 +44,5 @@ public class GridView  extends View {
                 cellViews[i][j].update();
             }
         }
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        // Call update method of each CellView when a property change is detected
-        for (int i = 0; i < cellViews.length; i++) {
-            for (int j = 0; j < cellViews[i].length; j++) {
-                cellViews[i][j].update();
-            }
-        }
-        repaint();
     }
 }
