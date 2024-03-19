@@ -26,7 +26,7 @@ public class Society extends Grid {
     }
 
     @Override
-    public Cell makeCell(boolean uniform) {
+    public Agent makeCell(boolean uniform) {
         if (uniform) {
             return new Agent(0);                     // Sets all to dead
         } else {
