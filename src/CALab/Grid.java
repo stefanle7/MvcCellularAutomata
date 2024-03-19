@@ -27,24 +27,27 @@ public abstract class Grid extends Model {
         // 1. use makeCell to fill in cells
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                cells[i][j] = makeCell(false);
+                cells[i][j] = makeCell(true);
             }
         }
 
         // 2. Use getNeighbors to set the neighbors field of each cell
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                // Get the current cell
-                Cell currentCell = cells[i][j];
+//                // Get the current cell
+//                Cell currentCell = cells[i][j];
+//
+//                // Get neighbors of the current cell within a specified radius
+//                Set<Cell> currentNeighbors = getNeighbors(currentCell, 1); // Example: radius = 1
+//
+//                // Set the neighbors field of the current cell
+//                currentCell.neighbors = currentNeighbors;
 
-                // Get neighbors of the current cell within a specified radius
-                Set<Cell> currentNeighbors = getNeighbors(currentCell, 1); // Example: radius = 1
-
-                // Set the neighbors field of the current cell
-                currentCell.neighbors = currentNeighbors;
+                cells[i][j].neighbors = getNeighbors(cells[i][j],1);
             }
         }
-        changed();
+        //changed();
+        repopulate(true);
     }
 
     // called when Populate button is clicked
@@ -79,8 +82,8 @@ public abstract class Grid extends Model {
         The asker is not a neighbor of itself.
         */
         Set<Cell> neighbors = new HashSet<>();
-        int row = asker.row;
-        int col = asker.col;
+        int row = asker.getRow();
+        int col = asker.getCol();
 
         // Iterate over rows within the specified radius
         for (int i = row - radius; i <= row + radius; i++) {
@@ -113,10 +116,11 @@ public abstract class Grid extends Model {
         // call each cell's observe method and notify subscribers
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
+                cells[i][j].neighbors = getNeighbors(cells[i][j],1);
                 cells[i][j].observe();
-                // Notify subscribers if needed
             }
         }
+        changed();
     }
 
     public void interact() {
@@ -126,6 +130,7 @@ public abstract class Grid extends Model {
                 cells[i][j].interact();
             }
         }
+        changed();
     }
 
     public void update() {
@@ -135,6 +140,7 @@ public abstract class Grid extends Model {
                 cells[i][j].update();
             }
         }
+        changed();
     }
 
     public void updateLoop(int cycles) {
@@ -144,7 +150,7 @@ public abstract class Grid extends Model {
             update();
             observe();
             time++;
-            System.out.println("time = " + time);
+            System.out.println("time = " + getTime());
         }
     }
 }
