@@ -4,127 +4,99 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-public class AppPanel extends JPanel implements ActionListener, PropertyChangeListener {
-    private AppFactory af;
-    protected View view;
-    public AppPanel.ControlPanel controlPanel;
-    private String fileName;
-    private boolean unsavedChanges;
-    public AppPanel(AppFactory af){
-        this.setLayout(new GridLayout());
+public class AppPanel extends JPanel implements Subscriber, ActionListener {
+    public static int FRAME_WIDTH = 830;
+    public static int FRAME_HEIGHT = 500;
+    private final View view;
+    public JPanel controls;
+    private Model model;
+    private AppFactory factory;
+    private JFrame frame;
 
-        this.af = af;
-        Model m = af.makeModel();
-        view = af.makeView(m);
-        controlPanel = new AppPanel.ControlPanel();
-        add(controlPanel);
-        controlPanel.setPreferredSize(new Dimension(300, 500));
+    public AppPanel(AppFactory newFactory) {
+        this.factory = newFactory;
+        controls = new JPanel();
+        model = factory.makeModel();
+        view = factory.makeView(model);
+        setLayout(new GridLayout(1, 3));
+        add(controls);
         add(view);
-        view.setPreferredSize(new Dimension(500, 500));
+        model.subscribe(this);
 
-    }
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        repaint();
+        frame = new SafeFrame();
+        Container cp = frame.getContentPane();
+        cp.add(this);
+        frame.setJMenuBar(createMenuBar());
+        frame.setTitle(factory.getTitle());
+        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
     }
 
     protected JMenuBar createMenuBar() {
         JMenuBar result = new JMenuBar();
-        JMenu fileMenu = Utilities.makeMenu("File", new String[]{"New", "Save", "Save as", "Open", "Quit"}, this);
-        JMenu editMenu = Utilities.makeMenu("Edit", af.getEditCommands(), this);
-        JMenu helpMenu = Utilities.makeMenu("Help", new String[]{"Help", "About"}, this);
+        JMenu fileMenu = Utilities.makeMenu("File", new String[]{"New", "Save", "SaveAs", "Open", "Quit"}, this);
         result.add(fileMenu);
+        JMenu editMenu = Utilities.makeMenu("Edit", this.factory.getEditCommands(), this);
         result.add(editMenu);
+        JMenu helpMenu = Utilities.makeMenu("Help", new String[]{"About", "Help"}, this);
         result.add(helpMenu);
         return result;
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
-        String cmmd = e.getActionCommand();
+        String cmd = e.getActionCommand();
+
         try {
-            switch(cmmd){
-                //file menu options
-                case "Save": {
-                    if (fileName == null){
-                        Utilities.save(view.model, false);
-                    } else {
-                        Utilities.save(view.model, true);
+            switch (cmd) {
+                case "Save":
+                    Utilities.save(model, false);
+                    break;
+                case "SaveAs":
+                    Utilities.save(model, true);
+                    break;
+                case "Open":
+                    Model newModel = Utilities.open(model);
+                    if (newModel != null) {
+                        setModel(newModel);
                     }
                     break;
-                }
-                case "Save as": {
-                    Utilities.save(view.model, true);
+                case "About":
+                    Utilities.inform(this.factory.about());
                     break;
-                }
-                case "Open": {
-                    view.setModel(Utilities.open(view.model));
+                case "Help":
+                    Utilities.inform(this.factory.getHelp());
                     break;
-                }
-                case "New":{
-                    if (this.view.model.getUnsavedChanges()){
-                        if (Utilities.confirm("Are you sure? Unsaved changes will be lost!")) {
-                            Model m = af.makeModel();
-                            view.setModel(m);
-                        }
-                    } else {
-                        Model m  = af.makeModel();
-                        view.setModel(m);
-                    }
+                case "New":
+                    Utilities.saveChanges(model);
+                    setModel(factory.makeModel());
+                    model.setUnsavedChanges(false);
                     break;
-                }
-                case "Quit": {
-                    if (this.view.model.getUnsavedChanges()){
-                        if (Utilities.confirm("Are you sure? Unsaved changes will be lost!")) {
-                            System.exit(0);
-                        }
-                    } else {
-                        System.exit(0);
-                    }
+                case "Quit":
+                    Utilities.saveChanges(model);
+                    System.exit(0);
                     break;
-                }
-                case "Help": {
-                    Utilities.inform(af.getHelp());
-                    break;
-                }
-                case "About":{
-                    Utilities.inform(af.about());
-                    break;
-                }
-                default: {
-                    Command chosenCommand = af.makeEditCommand(view.model, cmmd, e.getSource());
-                    if (chosenCommand != null){
-                        chosenCommand.execute();
-                    }
-                    else {
-                        throw new Exception("Unrecognized command: " + cmmd);
-                    }
-
-                }
+                default:
+                    Command c = factory.makeEditCommand(this.model, cmd, this);
+                    c.execute();
             }
-        } catch (Exception ex) {
-            Utilities.error(ex);
+        } catch (Exception error) {
+            Utilities.error(error);
         }
-    }
-    public class ControlPanel extends JPanel{
-        private JPanel controlButtons;
-        public ControlPanel(){
-            this.setMinimumSize(new Dimension(300, 500));
-            setBackground(Color.PINK);
-            controlButtons = new JPanel();
-        }
+
     }
 
-    public void display(){
-        SafeFrame frame = new SafeFrame();
-        Container cp = frame.getContentPane();
-        cp.add(this);
-        frame.setJMenuBar(this.createMenuBar());
-        frame.setTitle(af.getTitle());
-        frame.setSize(1000, 500);
+    public void display() {
         frame.setVisible(true);
+    }
+
+    public void update() {
+    }
+
+    public void setModel(Model newModel) {
+        this.model.unsubscribe(this);
+        this.model = newModel;
+        this.model.subscribe(this);
+        view.setModel(this.model);
+        model.changed();
     }
 }
