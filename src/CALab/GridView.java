@@ -19,6 +19,7 @@ public class GridView extends View {
         Grid gridModel = (Grid) model; // Cast the model to Grid since we're expecting a Grid object
         int dim = gridModel.getDim();
         cellViews = new CellView[dim][dim];
+        this.setLayout((new GridLayout(dim,dim)));
 
         // Iterate over each cell in the grid model
         for (int i = 0; i < dim; i++) {
