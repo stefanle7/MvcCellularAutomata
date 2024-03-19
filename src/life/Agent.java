@@ -8,7 +8,7 @@ import java.util.Random;
 public class Agent extends Cell {
 
     private int status = 0;
-    private int ambience = 8;
+    private int ambience = 0;
 
 
     public Agent(int status) {
@@ -39,19 +39,27 @@ public class Agent extends Cell {
 
     @Override
     public void update() {
-        nextState();
-        notifySubscribers();
+        if (status == 1) {
+            if (Society.death.contains(ambience)) {
+                status = 0;
+            }
+        } else {
+            if (Society.rebirth.contains(ambience)) {
+                status = 1;
+            }
+        }
+
     }
 
     @Override
     public void nextState() {
 //        status = (status + 1) % 2;
-        if (status == 0 && ambience == 3) {
-            status = 1;
-        }
-        else if (status == 1 && (ambience <= 1 || ambience >= 4)) {
-            status = 0;
-        }
+      if (status == 0 && Society.death.contains(status)) {
+          status = 1;
+      }
+      else if (status == 1 && Society.death.contains(ambience)) {
+          status = 0;
+      }
     }
 
     @Override
@@ -60,6 +68,7 @@ public class Agent extends Cell {
             status = new Random().nextInt(2); // Generates either 0 or 1 randomly
         } else {
             status = 0; // Sets the status to dead (0)
+            ambience = 0;
         }
     }
 
@@ -68,4 +77,18 @@ public class Agent extends Cell {
         return status; // Simply return the status value
     }
 
+    @Override
+    public int getAmbience() {
+        return ambience;
+    }
+
+    @Override
+    public Color getColor() {
+        if (getStatus() == 0) {
+            return Color.RED;
+        }
+        else {
+            return Color.GREEN;
+        }
+    }
 }

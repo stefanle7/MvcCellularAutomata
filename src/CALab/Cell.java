@@ -61,13 +61,7 @@ public abstract class Cell extends Publisher implements Serializable {
         }
     }
 
-    public Color getColor() {
-        if (this.getStatus() == 1) {
-            return Color.GREEN; // Alive cells are represented in green
-        } else {
-            return Color.RED; // Dead cells are represented in red
-        }
-    }
+    public abstract Color getColor();
 
     // observer neighbors' states
     public abstract void observe();
@@ -81,5 +75,6 @@ public abstract class Cell extends Publisher implements Serializable {
     public abstract void reset(boolean randomly);
     // determines if the cell is dead or alive
     public abstract int getStatus();
-
+    // determines the ambience
+    public abstract int getAmbience();
 }
