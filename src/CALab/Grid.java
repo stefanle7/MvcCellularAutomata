@@ -46,13 +46,12 @@ public abstract class Grid extends Model {
                 cells[i][j].neighbors = getNeighbors(cells[i][j],1);
             }
         }
-        //changed();
+//        changed();
         repopulate(true);
     }
 
     // called when Populate button is clicked
     public void repopulate(boolean randomly) {
-        System.out.println("Called " + randomly);
         if (randomly) {
             // randomly set the status of each cell
             Random random = new Random();
@@ -70,6 +69,7 @@ public abstract class Grid extends Model {
                 }
             }
         }
+        updateLoop(1);
         changed();
     }
 
@@ -150,7 +150,6 @@ public abstract class Grid extends Model {
             update();
             observe();
             time++;
-            System.out.println("time = " + getTime());
         }
     }
 }
