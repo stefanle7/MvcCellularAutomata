@@ -9,8 +9,6 @@ public class GridPanel extends AppPanel {
 
     public GridPanel(AppFactory factory) {
         super(factory);
-        Grid grid = (Grid) view.model;
-        controlPanel.setLayout(new FlowLayout()); // Use FlowLayout instead of GridLayout
 
         // Create buttons
         JButton run1Button = new JButton("Run1");
@@ -32,24 +30,9 @@ public class GridPanel extends AppPanel {
         clearButton.addActionListener(this);
 
         // Add buttons to the control panel
-        controlPanel.add(run1Button);
-        controlPanel.add(run50Button);
-        controlPanel.add(populateButton);
-        controlPanel.add(clearButton);
-
-        // Create grid panel (right side)
-        JPanel gridPanel = new JPanel(new GridLayout(grid.getDim(), grid.getDim()));
-
-        // Populate grid panel with cell views
-        for (int i = 0; i < grid.getDim(); i++) {
-            for (int j = 0; j < grid.getDim(); j++) {
-                Cell cell = grid.getCell(i, j);
-                CellView cellView = new CellView(cell);
-                gridPanel.add(cellView);
-            }
-        }
-
-        // Add grid panel to the main panel
-        add(gridPanel);
+        controls.add(run1Button);
+        controls.add(run50Button);
+        controls.add(populateButton);
+        controls.add(clearButton);
     }
 }
