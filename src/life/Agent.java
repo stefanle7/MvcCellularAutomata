@@ -7,6 +7,8 @@ import java.util.Random;
 
 public class Agent extends Cell {
 
+    //currently not using CALab.Cell
+
     private int status = 0;
     private int ambience = 0;
 

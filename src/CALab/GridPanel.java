@@ -9,10 +9,11 @@ public class GridPanel extends AppPanel {
 
     public GridPanel(AppFactory factory) {
         super(factory);
+        GridLayout layout = new GridLayout(1, 2);
 
         // Create buttons
-        JButton run1Button = new JButton("Run1");
-        JButton run50Button = new JButton("Run50");
+        JButton run1Button = new JButton("Run 1");
+        JButton run50Button = new JButton("Run 50");
         JButton populateButton = new JButton("Populate");
         JButton clearButton = new JButton("Clear");
 

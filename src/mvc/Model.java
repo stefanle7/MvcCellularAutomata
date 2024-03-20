@@ -10,7 +10,7 @@ public class Model extends Publisher implements Serializable {
     }
 
     public void changed(){
-        // firePropertyChange(null, null, null);
+        //firePropertyChange(null, null, null);
         this.unsavedChanges = true;
         this.notifySubscribers();
     }

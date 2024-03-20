@@ -7,17 +7,19 @@ import javax.swing.*;
 
 public class Utilities {
 
-    // asks user a yes/no question
+    //Confirmation window: Yes/No request.
+    //Displayed upon Exit command or closing of the window.
     public static boolean confirm(String query) {
         int result = JOptionPane.showConfirmDialog(null,
-                query, "choose one", JOptionPane.YES_NO_OPTION);
+                query, "Confirm",
+                JOptionPane.YES_NO_OPTION);
         return result == 0;
     }
 
-    // asks user for info
-    public static String ask(String query) {
+    // asks user for info => NOT IN USE
+   /* public static String ask(String query) {
         return JOptionPane.showInputDialog(null, query);
-    }
+    }*/
 
     // tells user some info
     public static void inform(String info) {
@@ -33,27 +35,32 @@ public class Utilities {
         inform(helpString);
     }
 
-    // tells user about an error
-    public static void error(String gripe) {
+    // tells user about an error => NOT IN USE
+/*    public static void error(String gripe) {
         JOptionPane.showMessageDialog(null,
                 gripe,
                 "OOPS!",
                 JOptionPane.ERROR_MESSAGE);
-    }
+    }*/
 
     // tells user about an exception
+    //Error message does not display error info. If hit Cancel during save - program crashes.
     public static void error(Exception gripe) {
         gripe.printStackTrace();
         JOptionPane.showMessageDialog(null,
                 gripe.getMessage(),
-                "OOPS!",
+                "ERROR. ",
                 JOptionPane.ERROR_MESSAGE);
     }
 
     // asks user to save changes
     public static void saveChanges(Model model) {
-        if (model.getUnsavedChanges() && Utilities.confirm("current model has unsaved changes, continue?"))
+        if (model.getUnsavedChanges() == true) {
+            Utilities.confirm("Current model has unsaved changes. Save before exit?");
             Utilities.save(model, false);
+        }
+        model.setUnsavedChanges(false);
+            //Utilities.save(model, false);
     }
 
     // asks user for a file name
@@ -122,16 +129,18 @@ public class Utilities {
         return result;
     }
 
-    // random number generator
-    public static Random rng = new Random(System.currentTimeMillis());
+    // random number generator => NOT IN USE
+    /*public static Random rng = new Random(System.currentTimeMillis());*/
 
-    public static void log(String msg) {
+    //NOT IN USE
+    /*public static void log(String msg) {
         System.out.println(msg); // for now
-    }
+    }*/
 
-    private static int nextID = 100;
+    //NOT IN USE
+    /*private static int nextID = 100;
     public static int getID() {
         return nextID++;
-    }
+    }*/
 
 }

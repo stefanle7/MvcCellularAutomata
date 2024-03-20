@@ -18,17 +18,16 @@ public class GridView extends View {
         this.setLayout((new GridLayout(size,size)));
 
         // creating a spot in the grid for every cell
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                Cell myCell = grid.getCell(i,j);
-                myCell.row = i;
-                myCell.col = j;
-                cellViews[i][j] = new CellView(myCell);
-                this.add(cellViews[i][j]);
+        for (int r = 0; r < size; r++) {
+            for (int c = 0; c < size; c++) {
+                Cell myCell = grid.getCell(r,c);
+                myCell.row = r;
+                myCell.col = c;
+                cellViews[r][c] = new CellView(myCell);
+                this.add(cellViews[r][c]);
             }
         }
     }
-
 
 
     public void update() { // I'm not sure if params are needed

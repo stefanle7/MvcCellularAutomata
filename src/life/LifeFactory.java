@@ -16,8 +16,8 @@ public class LifeFactory extends GridFactory {
         return new GridView((Society) m);
     }
 
-    @Override
+    /*@Override
     public String about() {
         return "Life Version 1.0.";
-    }
+    }*/
 }

@@ -18,27 +18,28 @@ public abstract class GridFactory implements AppFactory {
     // title of CALab
     @Override
     public String getTitle() {
-        return "Cell Automata: Life";
+        return "Cellular Automata Lab";
     }
 
     // help instructions
     @Override
     public String[] getHelp() {
-        return new String[] {"Click Run to update and view the status of cells as time passes",
-                "Click Populate to create cells within the grid",
-                "Click Clear to empty the grid"};
+        return new String[] {"[Run 1] simulates 1 generation",
+                "[Run 50] simulates 50 generations",
+                "[Populate] generates a random population of cells",
+                "[Clear] resets the simulation to the empty state"};
     }
 
     // provide information about the application
     @Override
     public String about() {
-        return "Cellular Automata: Life Group 4";
+        return "Cellular Automata Lab \nGroup 4";
     }
 
     // return array of edit commands
     @Override
     public String[] getEditCommands() {
-        return new String[] {"Run1", "Run50", "Populate", "Clear"};
+        return new String[] {"Run 1", "Run 50", "Populate", "Clear"};
     }
 
     // create and return appropriate edit commands
@@ -46,9 +47,9 @@ public abstract class GridFactory implements AppFactory {
     public Command makeEditCommand(Model model, String name, Object object) {
         if (name.equals("Populate")) {
             return new PopulateCommand(model);
-        } else if (name.equals("Run1")) {
+        } else if (name.equals("Run 1")) {
             return new RunCommand(model, 1);
-        } else if (name.equals("Run50")) {
+        } else if (name.equals("Run 50")) {
             return new RunCommand(model, 50);
         } else if (name.equals("Clear")) {
             return new ClearCommand(model);

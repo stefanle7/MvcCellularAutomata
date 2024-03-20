@@ -25,89 +25,77 @@ public abstract class Grid extends Model {
 
     protected void populate() {
         // 1. use makeCell to fill in cells
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                cells[i][j] = makeCell(true);
-            }
-        }
-
         // 2. Use getNeighbors to set the neighbors field of each cell
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                cells[i][j].neighbors = getNeighbors(cells[i][j],1);
+        for (int r = 0; r < cells.length; r++) {
+            for (int c = 0; c < cells[r].length; c++) {
+                cells[r][c] = makeCell(true);
+                cells[r][c].neighbors = getNeighbors(cells[r][c],1);
             }
         }
+        updateLoop(1);
+        changed();
     }
 
-    // called when Populate button is clicked
-    public void repopulate() {
+    public void repopulate(boolean randomly) {
+        if (randomly) {
             // randomly set the status of each cell
             Random random = new Random();
-            for (int i = 0; i < dim; i++) {
-                for (int j = 0; j < dim; j++) {
-                    cells[i][j].reset(true);
+            for (int r = 0; r < cells.length; r++) {
+                for (int c = 0; c < cells[r].length; c++) {
+                    cells[r][c].reset(random.nextBoolean());
                 }
             }
+        } else {
+            // set the status of each cell to 0 (dead)
+            for (int r = 0; r < cells.length; r++) {
+                for (int c = 0; c < cells[r].length; c++) {
+                    cells[r][c].reset(false);
+                }
+            }
+        }
         updateLoop(1);
         changed();
     }
 
     public void clear() {
         // set the status of each cell to 0 (dead)
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                cells[i][j].reset(false);
+        for (int r = 0; r < cells.length; r++) {
+            for (int c = 0; c < cells[r].length; c++) {
+                cells[r][c].reset(false);
             }
         }
         updateLoop(1);
-        changed();
+        //changed();
+        setUnsavedChanges(false);
     }
 
 
     public Set<Cell> getNeighbors(Cell asker, int radius) {
-        /*
-        return the set of all cells that can be reached from the asker in radius steps.
+        /* return the set of all cells that can be reached from the asker in radius steps.
         If radius = 1 this is just the 8 cells touching the asker.
         Tricky part: cells in row/col 0 or dim - 1.
-        The asker is not a neighbor of itself.
-        */
+        The asker is not a neighbor of itself. */
         Set<Cell> neighbors = new HashSet<>();
         int row = asker.getRow();
         int col = asker.getCol();
 
-        // Iterate over rows within the specified radius
-        for (int i = row - radius; i <= row + radius; i++) {
-            // Adjust row index for wrapping around
-            int adjustedRow = (i + dim) % dim;
-
-            // Iterate over columns within the specified radius
-            for (int j = col - radius; j <= col + radius; j++) {
-                // Adjust column index for wrapping around
-                int adjustedCol = (j + dim) % dim;
-
-                // Skip the current cell (asker)
-                if (adjustedRow == row && adjustedCol == col) {
-                    continue;
-                }
-                // Add the cell to neighbors set
-                neighbors.add(cells[adjustedRow][adjustedCol]);
-            }
+        for (int r = -radius; r < (radius+1); r++) {
+            for (int c = -radius; c < (radius+1); c++) {
+                int ar = (row + r + dim) % dim;
+                int ac = (col + c + dim) % dim;
+                neighbors.add(cells[ar][ac]);
+            } neighbors.remove(asker); //delete asker from calculation
         }
         return neighbors;
     }
 
-    // override these
-    public int getStatus() { return 0; }
-    public Color getColor() { return Color.GREEN; }
-
     // cell phases:
-
     public void observe() {
         // call each cell's observe method and notify subscribers
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                cells[i][j].neighbors = getNeighbors(cells[i][j],1);
-                cells[i][j].observe();
+        for (int r = 0; r < cells.length; r++) {
+            for (int c = 0; c < cells[r].length; c++) {
+                cells[r][c].neighbors = getNeighbors(cells[r][c],1);
+                cells[r][c].observe();
             }
         }
         changed();
@@ -115,9 +103,9 @@ public abstract class Grid extends Model {
 
     public void interact() {
         // Call each cell's interact method
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                cells[i][j].interact();
+        for (int r = 0; r < cells.length; r++) {
+            for (int c = 0; c < cells[r].length; c++) {
+                cells[r][c].interact();
             }
         }
         changed();
@@ -125,9 +113,9 @@ public abstract class Grid extends Model {
 
     public void update() {
         // Call each cell's update method
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                cells[i][j].update();
+        for (int r = 0; r < cells.length; r++) {
+            for (int c = 0; c < cells[r].length; c++) {
+                cells[r][c].update();
             }
         }
         changed();
@@ -140,6 +128,7 @@ public abstract class Grid extends Model {
             update();
             observe();
             time++;
+            System.out.println("time = " + time);
         }
     }
 }

@@ -19,7 +19,7 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener {
         controls = new JPanel();
         model = factory.makeModel();
         view = factory.makeView(model);
-        setLayout(new GridLayout(1, 3));
+        setLayout(new GridLayout(1, 1));
         add(controls);
         add(view);
         model.subscribe(this);
@@ -34,7 +34,7 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener {
 
     protected JMenuBar createMenuBar() {
         JMenuBar result = new JMenuBar();
-        JMenu fileMenu = Utilities.makeMenu("File", new String[]{"New", "Save", "SaveAs", "Open", "Quit"}, this);
+        JMenu fileMenu = Utilities.makeMenu("File", new String[]{"New", "Open", "Save", "Save As", "Quit"}, this);
         result.add(fileMenu);
         JMenu editMenu = Utilities.makeMenu("Edit", this.factory.getEditCommands(), this);
         result.add(editMenu);
@@ -51,7 +51,7 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener {
                 case "Save":
                     Utilities.save(model, false);
                     break;
-                case "SaveAs":
+                case "Save As":
                     Utilities.save(model, true);
                     break;
                 case "Open":
@@ -69,6 +69,7 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener {
                 case "New":
                     Utilities.saveChanges(model);
                     setModel(factory.makeModel());
+                    factory.makeView(model);
                     model.setUnsavedChanges(false);
                     break;
                 case "Quit":
@@ -89,8 +90,8 @@ public class AppPanel extends JPanel implements Subscriber, ActionListener {
         frame.setVisible(true);
     }
 
-    public void update() {
-    }
+
+    public void update() {}
 
     public void setModel(Model newModel) {
         this.model.unsubscribe(this);

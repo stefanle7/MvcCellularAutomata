@@ -23,14 +23,15 @@ public abstract class Cell extends Publisher implements Serializable {
 
     // choose a random neighbor as a partner
     public void choosePartner() {
-        if (partner == null && neighbors != null) {
 			/*
 			Set partner to null
 			Convert neighbors set to a local array
 			Starting at a random position in the array search for a neighbor without a partner
 			Make the first such neighbor (if any) the partner and set its partner field to this
 			*/
-            if (partner == null && neighbors != null) {
+            partner = null;
+
+            /*if (partner == null && neighbors != null) {
                 // Convert neighbors set to a local array
                 Cell[] neighborsArray = neighbors.toArray(new Cell[0]);
 
@@ -47,8 +48,7 @@ public abstract class Cell extends Publisher implements Serializable {
                         break; // Exit loop after finding the first partner
                     }
                 }
-            }
-        }
+            }*/
 
     }
 
