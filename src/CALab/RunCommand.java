@@ -14,6 +14,5 @@ public class RunCommand extends Command {
     public void execute() {
         Grid grid = (Grid) model;
         grid.updateLoop(loops);
-        ((Grid) model).changed();
     }
 }
