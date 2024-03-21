@@ -49,7 +49,6 @@ public abstract class Grid extends Model {
                 }
             }
         updateLoop(1);
-        changed();
     }
 
     public void clear() {
@@ -60,7 +59,6 @@ public abstract class Grid extends Model {
             }
         }
         updateLoop(1);
-        changed();
     }
 
 
@@ -110,7 +108,6 @@ public abstract class Grid extends Model {
                 cells[i][j].observe();
             }
         }
-        changed();
     }
 
     public void interact() {
@@ -120,7 +117,6 @@ public abstract class Grid extends Model {
                 cells[i][j].interact();
             }
         }
-        changed();
     }
 
     public void update() {
