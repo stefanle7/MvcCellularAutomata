@@ -29,10 +29,23 @@ public class GridPanel extends AppPanel {
         populateButton.addActionListener(this);
         clearButton.addActionListener(this);
 
-        // Add buttons to the control panel
-        controls.add(run1Button);
-        controls.add(run50Button);
-        controls.add(populateButton);
-        controls.add(clearButton);
+        // Add buttons to the control panel with GridBagLayout
+        controls.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(50, 50, 50, 50); // Reduced padding
+        controls.add(run1Button, gbc);
+
+        gbc.gridx = 1;
+        controls.add(run50Button, gbc);
+
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        controls.add(populateButton, gbc);
+
+        gbc.gridx = 1;
+        controls.add(clearButton, gbc);
     }
 }
