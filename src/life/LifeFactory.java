@@ -18,6 +18,6 @@ public class LifeFactory extends GridFactory {
 
     @Override
     public String about() {
-        return "Life Version 1.0.";
+        return "Life Version 1.0 by Stefan Le, Jason Doria, Taras Tishchenko";
     }
 }

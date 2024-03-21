@@ -18,6 +18,6 @@ public class View extends JPanel implements Subscriber {
         this.model.unsubscribe(this);
         this.model = newModel;
         this.model.subscribe(this);
-        this.repaint();
+        update();
     }
 }
