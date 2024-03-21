@@ -1,10 +1,7 @@
 package CALab;
 
-import javax.swing.*;
-
 import mvc.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
 
 public class GridView extends View {
 
@@ -36,6 +33,27 @@ public class GridView extends View {
         for (int i = 0; i < cellViews.length; i++) {
             for (int j = 0; j < cellViews[i].length; j++) {
                 cellViews[i][j].update();
+            }
+        }
+    }
+
+    @Override
+    public void setModel(Model newModel) {
+        this.model.unsubscribe(this);
+        this.model = newModel;
+        this.model.subscribe(this);
+
+        int size = ((Grid) model).getDim();
+        cellViews = new CellView[size][size];
+        this.setLayout((new GridLayout(size, size)));
+        this.removeAll();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Cell cell = ((Grid) model).getCell(i, j);
+                cell.row = i;
+                cell.col = j;
+                cellViews[i][j] = new CellView(cell);
+                this.add(cellViews[i][j]);
             }
         }
     }
